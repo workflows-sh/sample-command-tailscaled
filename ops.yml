@@ -1,0 +1,31 @@
+# for more info visit https://cto.ai/docs
+version: "1"
+commands:
+  - name: sample-command-tailscaled:0.1.0
+    description: Sample Command workflow that integrates with Tailscale
+    env:
+      static:
+        # The `TS_HOSTNAME` static environment variable is the hostname that
+        # will be used to represent the container when connecting to a Tailscale
+        # network.
+        #
+        # If you choose not to set the `AUTHKEY_SECRET_NAME` static variable
+        # below, the value of `TS_HOSTNAME` will be used to determine the key
+        # in your Secrets Store on the CTO.ai platform that represents your
+        # Tailscale auth key. The default is `TAILSCALE_AUTHKEY_<TS_HOSTNAME>`
+        # (e.g. `TAILSCALE_AUTHKEY_SAMPLE_COMMAND_TAILSCALED`).
+        - TS_HOSTNAME=sample-command-tailscaled
+
+        # Uncomment the `AUTHKEY_SECRET_NAME` static environment variable below
+        # if you wish to use a specific key to represent your Tailscale auth key.
+        # The value of this static variable will be the key used to retrieve the
+        # Tailscale auth key from your Secrets Store on the CTO.ai platform.
+        # - AUTHKEY_SECRET_NAME=
+      # secrets:
+        # The `TAILSCALE_AUTHKEY_<TS_HOSTNAME>` secret is the Tailscale auth key
+        # that will be used to authenticate the container to the Tailscale network.
+        # The value of this secret should be the auth key that you generated from
+        # the Tailscale admin console.
+        # - TAILSCALE_AUTHKEY_SAMPLE_COMMAND_TAILSCALED
+
+    run: node ./index.js

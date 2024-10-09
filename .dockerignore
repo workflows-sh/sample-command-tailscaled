@@ -1,0 +1,5 @@
+.dockerignore
+.editorconfig
+README.md
+LICENSE
+node_modules

@@ -1,0 +1,6 @@
+# Define dependencies in the style of a `.tool-versions` file used by the `asdf`
+# version manager. The only difference between this file and a `.tool-versions`
+# file is that the version doesn't need to be fully specified; simply the major
+# version is enough, as the install script will automatically install the latest
+# minor version available if none is specified.
+nodejs 22
