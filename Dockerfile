@@ -22,8 +22,8 @@ RUN curl -fsSL "https://pkgs.tailscale.com/stable/tailscale_${TAILSCALE_VERSION}
 # permissions to ensure that it can be executed by the `ops` user. We need to
 # use an entrypoint script to ensure the Tailscale daemon is running before we
 # run the code that defines our workflow.
-COPY --chown=ops:9999 lib/entrypoint.sh /ops/entrypoint.sh
-RUN chmod +x /ops/entrypoint.sh
+COPY --chown=ops:9999 lib/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # The base directory for our image is `/ops`, which is where all of the code
 # that defines our workflow will live.
@@ -66,7 +66,7 @@ RUN npm install
 
 # Copy the `index.js` file that defines the behavior of our workflow when the
 # workflow is run using the `ops run` command or any other trigger.
-COPY --chown=ops:9999 index.js /ops/
+COPY --chown=ops:9999 . /ops/
 
 ##############################################################################
 # As a security best practice the container will always run as non-root user.
@@ -77,4 +77,4 @@ COPY --chown=ops:9999 index.js /ops/
 # workflow container is run. The `entrypoint.sh` script will be passed the `run`
 # value from the `ops.yml` file that defines this workflow.
 USER ops
-ENTRYPOINT [ "/ops/entrypoint.sh" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
