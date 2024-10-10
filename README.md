@@ -4,6 +4,10 @@ This repository contains an example workflow that demonstrates how to use the Ta
 
 It also uses the [asdf](https://asdf-vm.com/) CLI—an all-in-one runtime version manager akin to nvm or pyenv—to manage the version of Node.js that is used to run the business logic of the Command.
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/a6b1f44f-d8c2-4183-939c-9b7cc4071804" alt="Example of the sample command being run as-is" width="75%" />
+</p>
+
 ## Getting Started
 
 ### Using this Template
@@ -44,6 +48,22 @@ Thus, for the default value of `TS_HOSTNAME` in the `ops.yml` file, the Secret i
 
 Alternatively, set a value for `AUTHKEY_SECRET_NAME` as a [static environment variable](https://cto.ai/docs/configs-and-secrets/managing-variables/#managing-workflow-behavior-with-environment-variables) in the `ops.yml` file, and the Command will look for the Tailscale authentication key in a Secret with the name specified by that value.
 
+## Creating Your Own Workflow
+
+Once you have this template initialized locally as a new Command workflow, you can modify the code in [index.js](./index.js) to define how the workflow should behave when it is run (see the [Workflow Architecture](#workflow-architecture) section below for more information).
+
+When you are ready to test your changes, you can [build and run the Command](https://cto.ai/docs/workflows/using-workflows/) locally using the `ops run` command with the `-b` flag:
+
+```bash
+ops run -b .
+```
+
+When you are ready to deploy your Command to the CTO.ai platform to make it available to your team via the `ops` CLI or our [Slack integration](https://cto.ai/docs/slackops/overview/), you can use the `ops publish` command:
+
+```bash
+ops publish .
+```
+
 ## Workflow Architecture
 
 The five main components described below define this example Command workflow.
@@ -58,7 +78,7 @@ Contains the scripts that are executed by the Dockerfile to install the dependen
 
 ### Container entrypoint: `lib/entrypoint.sh`
 
-The [`entrypoint.sh`](./lib/entrypoint.sh) script that is executed when the container starts. This script starts the `tailscaled` service, which will allow the client to connect to a Tailscale network when the Command is run. After the script starts the daemon, it uses the `exec` command to replace the current process with the process specified in the `ops.yml` file.
+The [`entrypoint.sh`](./lib/entrypoint.sh) script that is executed when the container starts. This script starts the `tailscaled` service, which will allow the client to connect to a Tailscale network when the Command is run. After the script starts the daemon, it uses the `exec` command to replace the current process (that is, the `entrypoint.sh` script) with the process specified in the `ops.yml` file.
 
 ### Workflow definition(s): `ops.yml`
 
@@ -69,7 +89,3 @@ The [`ops.yml`](./ops.yml) defines the configuration for this Command. The scrip
 The business logic of the workflow. The [`index.js`](./index.js) script is executed by the Command when it is run.
 
 There is where connection to a Tailscale network is initiated using the `tailscale up` command, which connects to the socket created by the `tailscaled` daemon started by the `entrypoint.sh` script.
-
-## Creating Your Own Workflow
-
-Once you have this template initialized locally as a new Command workflow, you can modify the code in [index.js](./index.js) to define how the workflow should behave when it is run.
