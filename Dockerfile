@@ -22,7 +22,7 @@ RUN curl -fsSL "https://pkgs.tailscale.com/stable/tailscale_${TAILSCALE_VERSION}
 # permissions to ensure that it can be executed by the `ops` user. We need to
 # use an entrypoint script to ensure the Tailscale daemon is running before we
 # run the code that defines our workflow.
-COPY --chown=ops:9999 entrypoint.sh /ops/entrypoint.sh
+COPY --chown=ops:9999 lib/entrypoint.sh /ops/entrypoint.sh
 RUN chmod +x /ops/entrypoint.sh
 
 # The base directory for our image is `/ops`, which is where all of the code
