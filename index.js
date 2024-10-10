@@ -52,7 +52,13 @@ async function main() {
     }
     sdk.log('Successfully connected to Tailscale network.')
 
+    /**
+     * Modify the code below to implement your workflow logic
+     * ------------------------------------------------------
+     */
+
     // Prompt the user to choose a Tailscale command to execute
+    // TODO: Modify this prompt with the options appropriate for the new Command
     const {action} = await ux.prompt({
         type: 'list',
         name: 'action',
@@ -62,6 +68,8 @@ async function main() {
     });
 
     // Execute the selected Tailscale command
+    // TODO: Modify the business logic defined here that controls how the
+    //       workflow behaves when it is run.
     if (action === 'logout') {
         await sdk.exec(`tailscale logout`)
         sdk.log('Tailscale disconnected. Exiting...')
@@ -79,6 +87,11 @@ async function main() {
         const whoisResponse = await sdk.exec(`tailscale whois $(tailscale ip --4)`)
         sdk.log(whoisResponse.stdout)
     }
+
+    /**
+     * ------------------------------------------------------
+     * Modify the code above to implement your workflow logic
+     */
 
     // Disconnect from the Tailscale network
     sdk.log('Disconnecting from Tailscale network...')
